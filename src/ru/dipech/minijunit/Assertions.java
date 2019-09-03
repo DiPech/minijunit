@@ -1,6 +1,12 @@
 package ru.dipech.minijunit;
 
 public class Assertions {
+    public static void assertTrue(boolean actual) {
+        if (!actual) {
+            fail("true", "false");
+        }
+    }
+
     public static void assertEquals(int expected, int actual) {
         if (expected != actual) {
             fail(expected, actual);

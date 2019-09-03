@@ -4,41 +4,48 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 public class TestRunner {
+    private StringBuilder stringBuilder;
+
     public void run(Class<?> clazz) throws Exception {
-        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder = new StringBuilder();
+        stringBuilder.append("Testing class «").append(clazz.getCanonicalName()).append("»\n");
+        testMethods(clazz);
+        System.out.println(stringBuilder.toString());
+    }
+
+    private void testMethods(Class<?> clazz) throws Exception {
         String className = clazz.getCanonicalName();
-        stringBuilder.append("Testing class «").append(className).append("»\n");
         Method[] methods = clazz.getDeclaredMethods();
         Object classObject = clazz.getDeclaredConstructor().newInstance();
-        int pass = 0;
-        int fail = 0;
+        int passed = 0;
+        int failed = 0;
         for (Method method : methods) {
             if (!method.isAnnotationPresent(Test.class)) {
                 continue;
             }
             String methodName = method.getName();
+            String classAndMethod = className + "::" + methodName;
             if (!Modifier.isPublic(method.getModifiers())) {
-                System.out.println("Annotated method " + className + "::" + methodName + " should be public!\n");
+                System.out.println("Annotated method " + classAndMethod + " should be public!\n");
                 continue;
             }
             if (method.getParameters().length > 0) {
-                System.out.println("Annotated method " + className + "::" + methodName + " shouldn't has parameters!\n");
+                System.out.println("Annotated method " + classAndMethod + " shouldn't has parameters!\n");
                 continue;
             }
             stringBuilder.append("  ").append("Method «").append(methodName).append("» ");
             try {
                 testMethod(method, classObject);
-                pass++;
+                passed++;
                 stringBuilder.append("passed.");
             } catch (TestException e) {
-                fail++;
+                failed++;
                 stringBuilder.append("failed: ").append(e.getMessage());
             }
             stringBuilder.append("\n");
         }
-        stringBuilder.append("Passed: ").append(pass).append("; ")
-                .append("Failed: ").append(fail).append(".");
-        System.out.println(stringBuilder.toString());
+        stringBuilder.append("Passed: ").append(passed).append("; ")
+                .append("Failed: ").append(failed).append(".");
     }
 
     private void testMethod(Method method, Object classObject) {
