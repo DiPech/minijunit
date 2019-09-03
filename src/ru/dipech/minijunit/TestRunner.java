@@ -24,7 +24,7 @@ public class TestRunner {
                 continue;
             }
             String methodName = method.getName();
-            String classAndMethod = className + "::" + methodName;
+            String classAndMethod = className + "." + methodName;
             if (!Modifier.isPublic(method.getModifiers())) {
                 System.out.println("Annotated method " + classAndMethod + " should be public!\n");
                 continue;
