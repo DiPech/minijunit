@@ -1,31 +1,21 @@
-Тестовый проект MiniJUnit
-========================================================================
+# MiniJUnit Test Project (2019)
 
-Постановка задачи
-------------------------------------------------------------------------
-Представьте, что у нас нет библиотеки JUnit и напишите нашу собственную библиотеку miniJUnit, 
-которая будет состоять из аннотации @Test и будет запускать все открытые методы 
-класса void с пустыми аргументами, аннотированными этой аннотацией.
+## What I was asked to implement
 
-Пояснения по реализации
-------------------------------------------------------------------------
+Implement your own simple test system like JUnit. It should have only `@Test` annotation and should be able to run all
+the `public void` methods annotated with the annotation.
 
-- Методы класса Assertions сделал статическими, удобно использовать статический импорт (см. `CalculatorTest`).
-- `TestException` сделал unchecked, хотя в принципе можно было бы и checked сделать. Хотя можно было бы и 
-  вовсе без исключений сделать, но мне захотелось.
-- Сделал проверку на ожидаемое исключение примерно также, как это было сделано в JUnit 4.
+## Implementation explanations
 
-Возможные улучшения реализации
-------------------------------------------------------------------------
+- Implemented expected exception handling like it is in JUnit 4.
+- Made `Assertions` class methods static because it's easier to use (see `CalculatorTest`).
+- It took 30 minutes to implement it.
 
-- Добавить парсер тестовых классов, а не вручную запускать каждый класс при помощи `TestRunner`.
-- В цепочке вызовов методов обрабатывать возможные исключения `clazz.getDeclaredConstructor().newInstance()`.
-- Добавить перегрузку метода `Assertions.assertEquals`, при этом не забыть для сравнимаемых объектов 
-  (не примитивов) использовать не оператор `==`, а `Object.equals`.
-- Накапливать предупреждения о неподходящей сигнатуре метода и выводить после тестов методов класса  или после 
-  всех тестов.
-- Возможен дальнейший рефакторинг метода `TestRunner.testMethods`, к примеру вынести проверки сигнатуры метода
-  в отдельный метод.
-- Можно покрыть тестами сами классы `Assertions` и `TestRunner`.
-- Переделать отслеживание ожидаемых исключений как это сделано в JUnit5.
-- И т.д, и т.п. Да тут много что можно улучшить, но смысла нет, ведь есть же проверенный инструмент JUnit :)
+## Possible further improvements
+
+- Add test classes parsing (don't run them manually).
+- Cover `Assertions` and `TestRunner` with tests themselves.
+- Check test methods signatures and report if it's wrong.
+- Add more overloaded `Assertions.assertEquals` methods.
+- Improve expected exceptions awaiting like it's done in JUnit5.
+- And so on and so forth... There is enormous room for improvements, but it's useless. Just use JUnit :)
